@@ -7,6 +7,8 @@ import {
   ManyToOne,
 } from "typeorm";
 import { ObjectType, Field, Int, InputType } from "type-graphql";
+import { Continent } from "./continent";
+import { ObjectId } from "../utils";
 
 @Entity()
 @ObjectType()
@@ -27,9 +29,16 @@ export class Country extends BaseEntity {
   @Field()
   emoji: string;
 
-  @Column()
+  // @Column()
+  // @Field()
+  // continent_code: string;
+
+  @ManyToOne(() => Continent, (continent) => continent.countries, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   @Field()
-  continent_code: string;
+  continent: Continent;
 }
 
 @ObjectType()
@@ -55,6 +64,6 @@ export class CountryInput {
   @Field()
   emoji: string;
 
-  @Field()
-  continent_code: string;
+  @Field(() => ObjectId)
+  continent: ObjectId;
 }

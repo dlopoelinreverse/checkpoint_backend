@@ -4,7 +4,7 @@ import { Country, CountryInput, CountryResponse } from "../entities/country";
 @Resolver(Country)
 class CountriesResolver {
   @Query(() => [CountryResponse])
-  async countries() {
+  async getCountries() {
     return Country.find();
   }
 
@@ -23,8 +23,12 @@ class CountriesResolver {
   }
 
   @Query(() => [Country])
-  async getCountriesByContinent(@Arg("continent_code") continent_code: string) {
-    return Country.find({ where: { continent_code } });
+  async getCountriesByContinent(@Arg("continentId") continentId: number) {
+    return Country.find({
+      where: {
+        continent: { id: continentId },
+      },
+    });
   }
 }
 
